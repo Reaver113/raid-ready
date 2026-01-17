@@ -6,7 +6,7 @@ export interface HeadingProps {
 }
 
 const Heading: React.FC = () => {
-  return <h1 className={styles.heading}>Raid Ready Checker</h1>;
+  return <h1 className={styles.heading}>Ready4Raid</h1>;
 };
 
 export default Heading;

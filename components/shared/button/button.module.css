@@ -1,7 +1,7 @@
 .button {
-  background-color: var(--button-color);
+  background-color: var(--cl-dark-blue);
   border: none;
-  color: white;
+  color: var(--cl-light);
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
@@ -14,6 +14,6 @@
 }
 
 .button:hover {
-  background-color: var(--button-hover-color);
-  color: var(--button-text-hover-color);
+  background-color: var(--cl-orange);
+  color: var(--cl-dark-blue);
 }
