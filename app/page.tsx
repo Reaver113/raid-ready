@@ -1,14 +1,19 @@
-"use client";
-
+import Landing from "@/components/landing/Landing";
 import Login from "@/components/login/Login";
-import { useState } from "react";
+import Logout from "@/components/logout/Logout";
+import { authConfig } from "@/lib/auth";
+import { getServerSession } from "next-auth";
 
-export default function Home() {
-  const [userAuthenticated, setUserAuthenticated] = useState(false);
+export default async function Home() {
+  const session = await getServerSession(authConfig);
 
-  if (!userAuthenticated) {
+  if (!session) {
     return <Login />;
   }
 
-  return <div>Authenticated User Content</div>;
+  return (
+    <>
+      <Landing />
+    </>
+  );
 }
