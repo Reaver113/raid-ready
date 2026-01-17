@@ -5,7 +5,10 @@
   --heading-color: #fca311;
   --text-color: #e5e5e5;
   --button-color: #14213d;
+  --button-hover-color: #fca311;
+  --button-text-hover-color: #000000;
 }
+
 body {
   color: var(--text-color);
   font-family: Arial, Helvetica, sans-serif;
