@@ -1,0 +1,7 @@
+.heading {
+  font-size: 34px;
+  font-weight: bolder;
+  color: var(--cl-orange);
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
