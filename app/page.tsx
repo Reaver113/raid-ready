@@ -1,6 +1,5 @@
 import Landing from "@/components/landing/Landing";
 import Login from "@/components/login/Login";
-import Logout from "@/components/logout/Logout";
 import { authConfig } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 
