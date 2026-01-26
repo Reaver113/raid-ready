@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import styles from "./dropdown.module.css";
 
 type DropdownProps<T> = {
   items: T[];
@@ -29,15 +30,9 @@ export function Dropdown<T>({
   }
 
   return (
-    <div className={`relative inline-block ${className}`}>
+    <div className={`${styles.container} ${className}`}>
       <select
-        className="
-          w-full rounded-xl border
-          px-3 py-2
-          bg-white
-          shadow-sm
-          focus:outline-none focus:ring-2 focus:ring-blue-500
-        "
+        className={styles.select}
         value={selected ? items.indexOf(selected) : ""}
         onChange={(e) => handleChange(items[Number(e.target.value)])}
       >
