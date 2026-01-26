@@ -42,3 +42,21 @@ Implemntation of API calls to access player gear and current raiding tiers.
 #### Possible difficulties
 
 Managing multiple API calls to different endpoints to access the required information could have unforseen issues with state handling or too many requests.
+
+### Week Two
+
+Creation of API call to access Wow Profiles and implementation of dropdown component to Pick between Realms and Characters.
+
+![Character Select](./public/screenshots/development_character_select.jpg)
+
+#### Encountered Issues
+
+Understanding of how Auth js handled the returned information was inccorect and required additonal fields such as JWT for access token encryption, as well as aditional scope fields to allow access to certain parts of the WoW API such as profile information.
+
+#### Next Steps
+
+Fetching of additonal information for selected characters such as item Level, Clean up of character panel component to use react-bootstrap to be in line with the rest of the project, clean up of types using a global types file now that there is a better understanding of the types used.
+
+#### Possible difficulties
+
+The handling of multiple API returns and passing information through multiple components could exponentially increase the complexity of this project.

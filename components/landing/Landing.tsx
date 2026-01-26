@@ -1,10 +1,10 @@
 "use client";
 
 import { Col, Container, Row } from "react-bootstrap";
-import { Session } from "next-auth";
 import Logout from "../logout/Logout";
 import Heading from "../heading/Heading";
 import UserPanel from "../userPanel/UserPanel";
+import CharacterPanel from "../characterPanel/CharacterPanel";
 
 const Landing: React.FC = () => {
   return (
@@ -19,6 +19,7 @@ const Landing: React.FC = () => {
       </Row>
       <Row>
         <UserPanel />
+        <CharacterPanel />
       </Row>
     </Container>
   );
