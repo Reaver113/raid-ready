@@ -9,7 +9,7 @@ import CharacterSelect from "./characterSelect/CharacterSelect";
 import CharacterInfo from "./characterInfo/CharacterInfo";
 import fetchEquipment from "@/fetch/fetchEquipment";
 import LoadingWheel from "@/components/shared/loadingWheel/LoadingWheel";
-import CharacterEquipment from "./characterStats/CharacterEquipment";
+import CharacterEquipment from "./characterEquipment/CharacterEquipment";
 import fetchAppearance from "@/fetch/fetchAppearance";
 
 export default function CharacterPanel({

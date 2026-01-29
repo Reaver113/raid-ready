@@ -1,3 +1,4 @@
+import Item from "@/components/item/Item";
 import Bubble from "@/components/shared/bubble/Bubble";
 import LoadingWheel from "@/components/shared/loadingWheel/LoadingWheel";
 import type { CharacterEquipment } from "@/lib/types";
@@ -21,10 +22,11 @@ const CharacterEquipment = ({ loading, error, characterEquipment }: Props) => {
     <Bubble xs={12} type="solid">
       <div>
         {characterEquipment?.equipped_items.map((item, index) => (
-          <div key={item.item?.id}>
+          <div key={`${item.item?.id}-${index}`}>
             <h4>{item.name}</h4>
             <p>Level: {item.level?.value}</p>
             <p>Quality: {item.quality?.name}</p>
+            {item?.item?.id && <Item itemId={item.item?.id} />}
           </div>
         ))}
       </div>

@@ -84,3 +84,17 @@ export interface EquippedItem {
   transmog?: Record<string, any>;
   [key: string]: any;
 }
+
+export interface ItemIconAsset {
+  key: string;
+  value: string;
+  file_data_id?: number;
+  [key: string]: any;
+}
+
+export interface ItemIcon {
+  _links?: { self?: { href?: string } };
+  assets: ItemIconAsset[];
+  id: number;
+  [key: string]: any;
+}

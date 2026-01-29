@@ -136,3 +136,43 @@ export async function getCharacterAppearance(
     throw error;
   }
 }
+
+export async function getItemImage(session: Session | null, itemId: number) {
+  if (!session || !session.access_token) {
+    throw new Error("No valid session or access token available");
+  }
+
+  try {
+    const response = await fetch(
+      `${BATTLENET_API_BASE}/data/wow/media/item/${itemId}?namespace=static-us&locale=en_US`,
+      {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const responseBody = await response
+        .text()
+        .catch(() => "<unable to read body>");
+      console.error("Battle.net API error fetching item image", {
+        url: response.url,
+        itemId: itemId,
+        status: response.status,
+        statusText: response.statusText,
+        body: responseBody,
+      });
+      throw new Error(
+        `Battle.net API error: ${response.status} ${response.statusText} - ${responseBody}`,
+      );
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch Item Image:", error);
+    throw error;
+  }
+}
