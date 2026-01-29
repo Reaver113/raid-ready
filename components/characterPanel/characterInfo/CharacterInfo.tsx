@@ -10,7 +10,7 @@ const CharacterInfo = ({
   playable_race,
 }: Character) => {
   return (
-    <Bubble xs={5} type="solid">
+    <Bubble xs={12} type="solid">
       <div className={styles.headingContainer}>
         <ClassIconDeterminer characterClass={playable_class.name} />
         <h3 className={styles.name}>{name}</h3>

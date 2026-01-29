@@ -1,5 +1,6 @@
 .characterSelect {
-  margin-bottom: 2rem;
+  display: grid;
+  gap: 1rem;
 }
 
 .label {

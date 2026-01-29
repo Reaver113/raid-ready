@@ -23,7 +23,7 @@ const CharacterSelect = ({
 }: CharacterSelectProps) => {
   return (
     <Row className={styles.characterSelect}>
-      <Col xs={6}>
+      <Col xs={12}>
         <label className={styles.label}>Select Realm</label>
         <Dropdown
           items={uniqueRealms}
@@ -36,7 +36,7 @@ const CharacterSelect = ({
           placeholder="Choose a realm..."
         />
       </Col>
-      <Col xs={6}>
+      <Col xs={12}>
         <label className={styles.label}>Select Character</label>
         <Dropdown
           items={charactersInRealm}

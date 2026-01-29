@@ -4,11 +4,7 @@
   align-items: center;
 }
 
-.errorText {
-  padding: 1rem;
-  color: #ef4444;
-}
-
-.noDataText {
-  padding: 1rem;
+.characterPanel {
+  display: grid;
+  gap: 1.5rem;
 }
