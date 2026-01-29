@@ -7,6 +7,7 @@ import { ItemIcon } from "@/lib/types";
 import Image from "next/image";
 import LoadingWheel from "../shared/loadingWheel/LoadingWheel";
 import styles from "./item.module.css";
+import ItemHover from "./itemHover/ItemHover";
 
 const Item = ({ itemId }: { itemId: number }) => {
   const [loading, setLoading] = useBoolean(false);
@@ -28,14 +29,21 @@ const Item = ({ itemId }: { itemId: number }) => {
   if (error) return <div>Error: {error}</div>;
   if (itemIcon?.assets?.[0]?.value) {
     return (
-      <div className={styles.item}>
-        <Image
-          src={itemIcon?.assets?.[0]?.value}
-          alt="Item Icon"
-          width={64}
-          height={64}
+      <>
+        <div className={styles.item}>
+          <Image
+            src={itemIcon?.assets?.[0]?.value}
+            alt="Item Icon"
+            width={64}
+            height={64}
+          />
+        </div>
+        <ItemHover
+          itemName={itemIcon.name}
+          level={itemIcon.level}
+          quality={itemIcon.quality}
         />
-      </div>
+      </>
     );
   }
 };

@@ -98,3 +98,13 @@ export interface ItemIcon {
   id: number;
   [key: string]: any;
 }
+
+export interface ItemHoverProps {
+  itemName?: string;
+  level?: {
+    value?: number;
+    display_string?: string;
+    [key: string]: any;
+  } | null;
+  quality?: { type?: string; name?: string; [key: string]: any } | null;
+}

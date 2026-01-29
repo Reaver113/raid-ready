@@ -23,9 +23,6 @@ const CharacterEquipment = ({ loading, error, characterEquipment }: Props) => {
       <div>
         {characterEquipment?.equipped_items.map((item, index) => (
           <div key={`${item.item?.id}-${index}`}>
-            <h4>{item.name}</h4>
-            <p>Level: {item.level?.value}</p>
-            <p>Quality: {item.quality?.name}</p>
             {item?.item?.id && <Item itemId={item.item?.id} />}
           </div>
         ))}
