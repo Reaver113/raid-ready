@@ -6,8 +6,10 @@ import Heading from "../heading/Heading";
 import UserPanel from "../userPanel/UserPanel";
 import CharacterPanel from "../characterPanel/CharacterPanel";
 import styles from "./landing.module.css";
+import useBoolean from "../../hooks/useBoolean";
 
 const Landing: React.FC = () => {
+  const [characterSelected, setCharacterSelected] = useBoolean(false);
   return (
     <Container className={styles.landingContainer}>
       <Row>
@@ -16,9 +18,13 @@ const Landing: React.FC = () => {
           <Logout />
         </Col>
       </Row>
-      <UserPanel xs={5} />
+      <div
+        className={`${styles.userPanelWrap} ${characterSelected ? styles.collapseUserPanel : ""}`}
+      >
+        <UserPanel />
+      </div>
       <Row>
-        <CharacterPanel />
+        <CharacterPanel setCharacterSelected={setCharacterSelected} />
       </Row>
     </Container>
   );
