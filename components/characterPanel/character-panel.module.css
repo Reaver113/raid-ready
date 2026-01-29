@@ -1,5 +1,7 @@
-.loadingText {
-  padding: 1rem;
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .errorText {
