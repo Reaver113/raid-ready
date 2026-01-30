@@ -10,7 +10,7 @@ import LoadingWheel from "../shared/loadingWheel/LoadingWheel";
 import styles from "./item.module.css";
 import ItemHover from "./itemHover/ItemHover";
 
-const Item = ({ item }: { item: EquippedItem }) => {
+const Item = ({ item, index }: { item: EquippedItem; index: number }) => {
   const [loading, setLoading] = useBoolean(false);
   const [itemIcon, setItemIcon] = useState<ItemIcon | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -19,6 +19,9 @@ const Item = ({ item }: { item: EquippedItem }) => {
 
   const id = item?.item?.id ?? item?.id;
   const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const effectiveIndex = (index ?? 0) + 1;
+  const alignLeft = effectiveIndex % 2 === 0;
 
   useEffect(() => {
     if (!id) return;
@@ -40,7 +43,6 @@ const Item = ({ item }: { item: EquippedItem }) => {
   }, []);
 
   const onClick = useCallback((e: React.MouseEvent) => {
-    // show hover at tap/click location (useful for touch)
     setCoords({ x: e.clientX, y: e.clientY });
     setHovering((v) => !v);
   }, []);
@@ -66,6 +68,16 @@ const Item = ({ item }: { item: EquippedItem }) => {
   if (itemIcon?.assets?.[0]?.value) {
     return (
       <>
+        {hovering && (
+          <ItemHover
+            itemName={item?.name}
+            level={item.level}
+            quality={item.quality}
+            x={coords?.x}
+            y={coords?.y}
+            alignLeft={alignLeft}
+          />
+        )}
         <div
           className={styles.item}
           ref={containerRef}
@@ -77,19 +89,10 @@ const Item = ({ item }: { item: EquippedItem }) => {
           <Image
             src={itemIcon?.assets?.[0]?.value}
             alt="Item Icon"
-            width={40}
-            height={40}
+            width={32}
+            height={32}
           />
         </div>
-        {hovering && (
-          <ItemHover
-            itemName={item?.name}
-            level={item.level}
-            quality={item.quality}
-            x={coords?.x}
-            y={coords?.y}
-          />
-        )}
       </>
     );
   }

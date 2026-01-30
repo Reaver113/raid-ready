@@ -1,6 +1,8 @@
 .itemHover {
   position: fixed;
-  width: fit-content;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 260px;
   color: white;
   padding: 0.75rem 1rem;
   border: 2px solid var(--cl-dark-blue);
@@ -8,6 +10,5 @@
   border-radius: 6px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
   pointer-events: none;
-  transform: translate(12px, 12px);
   z-index: 1000;
 }
