@@ -9,7 +9,7 @@ import styles from "./landing.module.css";
 import useBoolean from "../../hooks/useBoolean";
 
 const Landing: React.FC = () => {
-  const [characterSelected, setCharacterSelected] = useBoolean(false);
+  const [isCharacterSelected, setIsCharacterSelected] = useBoolean(false);
   return (
     <Container className={styles.landingContainer}>
       <Row>
@@ -19,12 +19,12 @@ const Landing: React.FC = () => {
         </Col>
       </Row>
       <div
-        className={`${styles.userPanelWrap} ${characterSelected ? styles.collapseUserPanel : ""}`}
+        className={`${styles.userPanelWrap} ${isCharacterSelected ? styles.collapseUserPanel : ""}`}
       >
         <UserPanel />
       </div>
       <Row>
-        <CharacterPanel setCharacterSelected={setCharacterSelected} />
+        <CharacterPanel setIsCharacterSelected={setIsCharacterSelected} />
       </Row>
     </Container>
   );
