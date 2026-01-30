@@ -63,6 +63,22 @@ The handling of multiple API returns and passing information through multiple co
 
 ## Week Three
 
-Implementation of API call for character equipment and further call for individual equipment Icon, added hover box for item information
+Implementation of API calls for character equipment and further call for individual equipment Icons, added hover box for item information
 
 ![Items](./public/screenshots/development_items.jpg)
+
+Added API Calls for current expansion, raid tiers, and difficulties, cleaned up front end, added the new Loading Wheel component to most functional components, added further options, and displaying the item level of gear dropped by this raid, switched to mobile development.
+
+![Character_Screen](./public/screenshots/Development_Character_Screen.jpg)
+
+#### Encountered Issues
+
+Some fetch requests like in the IlvlChecker appear to be sending twice, need further investigation into how to solve, A lot of handeling of Loading And Error States across multiple components, also need futher investigation into possible solutions.
+
+## Next Steps
+
+Adding in the logic to decide what the approriate item level would be for your character to attempt the selected raid, further front end cleanup and animations.
+
+#### Possible difficulties
+
+Most of the difficult parts seem to be behind me now, figuring out how to clean up some of the states and repeat fetch requests could cause issues.
