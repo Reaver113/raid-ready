@@ -1,65 +1,79 @@
 "use client";
-
+import { WoWProfile, Character } from "@/lib/types";
 import { useEffect, useState } from "react";
-import { Dropdown } from "@/components/shared/dropdown/Dropdown";
+import type {
+  CharacterAppearance,
+  JournalInstanceRef,
+  JournalInstanceMode,
+  Setter,
+} from "@/lib/types";
 import styles from "./character-panel.module.css";
 import { Col } from "react-bootstrap";
+import fetchProfile from "@/fetch/fetchProfile";
+import CharacterSelect from "./characterSelect/CharacterSelect";
+import CharacterInfo from "./characterInfo/CharacterInfo";
+import fetchEquipment from "@/fetch/fetchEquipment";
+import LoadingWheel from "@/components/shared/loadingWheel/LoadingWheel";
+import CharacterEquipment from "./characterEquipment/CharacterEquipment";
+import fetchAppearance from "@/fetch/fetchAppearance";
+import RaidSelect from "./raidSelect/RaidSelect";
+import IlvlCalculation from "../ilvlCalculation/IlvlCalculation";
 
-interface Character {
-  id: number;
-  name: string;
-  realm: {
-    name: string;
-    slug: string;
-  };
-  playable_class: {
-    name: string;
-  };
-  playable_race: {
-    name: string;
-  };
-  level: number;
-}
-
-interface WoWProfile {
-  id: number;
-  wow_accounts: Array<{
-    id: number;
-    characters: Character[];
-  }>;
-}
-
-export default function CharacterPanel() {
+export default function CharacterPanel({
+  setIsCharacterSelected,
+}: {
+  setIsCharacterSelected: Setter;
+}) {
+  const [firstRaidEncounterId, setFirstRaidEncounterId] = useState<
+    string | null
+  >(null);
+  const [selectedRaid, setSelectedRaid] = useState<JournalInstanceRef | null>(
+    null,
+  );
+  const [selectedDifficulty, setSelectedDifficulty] =
+    useState<JournalInstanceMode | null>(null);
   const [profile, setProfile] = useState<WoWProfile | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [equipmentLoading, setEquipmentLoading] = useState(false);
+  const [equipmentError, setEquipmentError] = useState<string | null>(null);
+  const [appearanceLoading, setAppearanceLoading] = useState(false);
+  const [appearanceError, setAppearanceError] = useState<string | null>(null);
+  const [profileError, setProfileError] = useState<string | null>(null);
   const [selectedRealm, setSelectedRealm] = useState<string | null>(null);
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
     null,
   );
+  const [characterEquipment, setCharacterEquipment] = useState<any>(null);
+  const [characterAppearance, setCharacterAppearance] =
+    useState<CharacterAppearance | null>(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch("/api/wow/profile");
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch WoW profile");
-        }
-
-        const data = await response.json();
-        setProfile(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProfile();
+    fetchProfile({
+      setLoading: setProfileLoading,
+      setProfile,
+      setError: setProfileError,
+    });
   }, []);
 
+  useEffect(() => {
+    if (selectedCharacter) {
+      setIsCharacterSelected.on();
+      fetchEquipment({
+        setLoading: setEquipmentLoading,
+        setCharacterEquipment,
+        setError: setEquipmentError,
+        realmSlug: selectedCharacter?.realm.slug || "",
+        characterName: selectedCharacter?.name.toLowerCase() || "",
+      });
+      fetchAppearance({
+        setLoading: setAppearanceLoading,
+        setCharacterAppearance,
+        setError: setAppearanceError,
+        realmSlug: selectedCharacter?.realm.slug || "",
+        characterName: selectedCharacter?.name.toLowerCase() || "",
+      });
+    }
+  }, [selectedCharacter]);
   // Get all unique realms from the profile
   const allCharacters =
     profile?.wow_accounts?.flatMap((a) => a.characters) || [];
@@ -74,68 +88,57 @@ export default function CharacterPanel() {
     ? allCharacters.filter((char) => char.realm.slug === selectedRealm)
     : [];
 
-  if (loading)
-    return <div className={styles.loadingText}>Loading profile...</div>;
-  if (error) return <div className={styles.errorText}>Error: {error}</div>;
+  if (profileLoading)
+    return (
+      <Col xs={12} className={styles.loading}>
+        <LoadingWheel />
+      </Col>
+    );
+  if (profileError)
+    return <div className={styles.errorText}>Error: {profileError}</div>;
   if (!profile)
     return <div className={styles.noDataText}>No profile data available</div>;
 
   return (
-    <Col xs={12} className={styles.container}>
-      <h2 className={styles.title}>WoW Profile</h2>
-
-      <div className={styles.dropdownContainer}>
-        <div className={styles.dropdownCol}>
-          <label className={styles.label}>Select Realm</label>
-          <Dropdown
-            items={uniqueRealms}
-            value={uniqueRealms.find((r) => r.slug === selectedRealm)}
-            onChange={(realm) => {
-              setSelectedRealm(realm.slug);
-              setSelectedCharacter(null);
-            }}
-            getLabel={(realm) => realm.name}
-            placeholder="Choose a realm..."
-            className={styles.dropdownCol}
-          />
-        </div>
-
-        <div className={styles.dropdownCol}>
-          <label className={styles.label}>Select Character</label>
-          <Dropdown
-            items={charactersInRealm}
-            value={selectedCharacter || undefined}
-            onChange={setSelectedCharacter}
-            getLabel={(char) => `${char.name} (Lvl ${char.level})`}
-            placeholder="Choose a character..."
-            className={styles.dropdownCol}
-          />
-        </div>
-      </div>
-
+    <Col xs={12} className={styles.characterPanel}>
+      <CharacterSelect
+        uniqueRealms={uniqueRealms}
+        selectedRealm={selectedRealm}
+        setSelectedRealm={setSelectedRealm}
+        charactersInRealm={charactersInRealm}
+        selectedCharacter={selectedCharacter}
+        setSelectedCharacter={setSelectedCharacter}
+      />
+      {selectedCharacter && <CharacterInfo {...selectedCharacter} />}
       {selectedCharacter && (
-        <div className={styles.characterCard}>
-          <div className={styles.characterHeader}>
-            <div className={styles.characterInfo}>
-              <h3 className={styles.characterName}>{selectedCharacter.name}</h3>
-              <p className="text-lg text-gray-600">
-                {selectedCharacter.realm.name}
-              </p>
-            </div>
-            <span className="text-lg font-medium bg-blue-100 px-4 py-2 rounded">
-              Level {selectedCharacter.level}
-            </span>
-          </div>
-
-          <div className="text-gray-700 space-y-2">
-            <p>
-              <strong>Class:</strong> {selectedCharacter.playable_class.name}
-            </p>
-            <p>
-              <strong>Race:</strong> {selectedCharacter.playable_race.name}
-            </p>
-          </div>
-        </div>
+        <RaidSelect
+          setFirstRaidEncounterId={setFirstRaidEncounterId}
+          selectedRaid={selectedRaid}
+          setSelectedRaid={setSelectedRaid}
+          selectedDifficulty={selectedDifficulty}
+          setSelectedDifficulty={setSelectedDifficulty}
+        />
+      )}
+      {selectedRaid && selectedDifficulty && (
+        <IlvlCalculation
+          firstRaidEncounterId={firstRaidEncounterId}
+          selectedRaid={selectedRaid}
+          selectedDifficulty={selectedDifficulty}
+        />
+      )}
+      {selectedCharacter && (
+        <CharacterEquipment
+          loading={equipmentLoading}
+          error={equipmentError}
+          characterEquipment={characterEquipment}
+          appearance={
+            characterAppearance?.assets?.find(
+              (asset) => asset.key === "main-raw",
+            )?.value
+          }
+          appearanceError={appearanceError}
+          appearanceLoading={appearanceLoading}
+        />
       )}
     </Col>
   );

@@ -1,0 +1,12 @@
+.characterSelect {
+  display: grid;
+  gap: 1rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--cl-orange);
+}

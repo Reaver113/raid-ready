@@ -1,0 +1,35 @@
+.headingContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .name {
+    font-size: 22px;
+    line-height: 2.25rem;
+    font-weight: 600;
+  }
+
+  .subheadingContainer {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: center;
+
+    .level {
+      font-size: 1.125rem;
+      line-height: 1.75rem;
+      font-weight: 500;
+      background-color: var(--cl-dark-blue);
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      font-weight: 900;
+      color: var(--cl-orange);
+    }
+
+    .race {
+      color: var(--cl-dark-blue);
+      font-weight: 600;
+    }
+  }
+}

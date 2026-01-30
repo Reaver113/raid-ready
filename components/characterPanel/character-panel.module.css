@@ -1,86 +1,10 @@
-.container {
-  padding: 1rem;
-}
-
-.title {
-  font-size: 1.5rem;
-  line-height: 2rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-}
-
-.dropdownContainer {
-  margin-bottom: 1.5rem;
+.loading {
   display: flex;
-  gap: 1rem;
+  justify-content: center;
+  align-items: center;
 }
 
-.dropdownCol {
-  flex: 1;
-}
-
-.label {
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
-
-.characterCard {
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  background-color: #f9fafb;
-}
-
-.characterHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-}
-
-.characterInfo {
-  margin-bottom: 1rem;
-}
-
-.characterName {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-  font-weight: 600;
-}
-
-.realmName {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  color: #4b5563;
-}
-
-.levelBadge {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  font-weight: 500;
-  background-color: #dbeafe;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-}
-
-.characterDetails {
-  color: #374151;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.loadingText {
-  padding: 1rem;
-}
-
-.errorText {
-  padding: 1rem;
-  color: #ef4444;
-}
-
-.noDataText {
-  padding: 1rem;
+.characterPanel {
+  display: grid;
+  gap: 1.5rem;
 }

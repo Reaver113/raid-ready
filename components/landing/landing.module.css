@@ -1,0 +1,18 @@
+.headingContainer {
+  text-align: start;
+  position: relative;
+}
+
+.userPanelWrap {
+  overflow: hidden;
+  max-height: 300px;
+  transition:
+    max-height 500ms ease-in-out,
+    padding 500ms ease-in-out;
+}
+
+.collapseUserPanel {
+  max-height: 0;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}

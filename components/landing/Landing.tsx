@@ -5,21 +5,26 @@ import Logout from "../logout/Logout";
 import Heading from "../heading/Heading";
 import UserPanel from "../userPanel/UserPanel";
 import CharacterPanel from "../characterPanel/CharacterPanel";
+import styles from "./landing.module.css";
+import useBoolean from "../../hooks/useBoolean";
 
 const Landing: React.FC = () => {
+  const [isCharacterSelected, setIsCharacterSelected] = useBoolean(false);
   return (
-    <Container>
+    <Container className={styles.landingContainer}>
       <Row>
-        <Col>
+        <Col xs={12} className={styles.headingContainer}>
           <Heading />
-        </Col>
-        <Col>
           <Logout />
         </Col>
       </Row>
-      <Row>
+      <div
+        className={`${styles.userPanelWrap} ${isCharacterSelected ? styles.collapseUserPanel : ""}`}
+      >
         <UserPanel />
-        <CharacterPanel />
+      </div>
+      <Row>
+        <CharacterPanel setIsCharacterSelected={setIsCharacterSelected} />
       </Row>
     </Container>
   );
