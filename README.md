@@ -65,7 +65,7 @@ The handling of multiple API returns and passing information through multiple co
 
 Implementation of API calls for character equipment and further call for individual equipment Icons, added hover box for item information
 
-![Items](./public/screenshots/development_items.jpg)
+![Items](./public/screenshots/development_items.png)
 
 Added API Calls for current expansion, raid tiers, and difficulties, cleaned up front end, added the new Loading Wheel component to most functional components, added further options, and displaying the item level of gear dropped by this raid, switched to mobile development.
 
