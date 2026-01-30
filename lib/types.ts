@@ -107,4 +107,7 @@ export interface ItemHoverProps {
     [key: string]: any;
   } | null;
   quality?: { type?: string; name?: string; [key: string]: any } | null;
+  // Optional cursor position for hover popup (viewport coordinates in px)
+  x?: number;
+  y?: number;
 }

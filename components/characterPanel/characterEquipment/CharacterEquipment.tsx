@@ -23,7 +23,7 @@ const CharacterEquipment = ({ loading, error, characterEquipment }: Props) => {
       <div>
         {characterEquipment?.equipped_items.map((item, index) => (
           <div key={`${item.item?.id}-${index}`}>
-            {item?.item?.id && <Item itemId={item.item?.id} />}
+            {item?.item?.id && <Item item={item} />}
           </div>
         ))}
       </div>
