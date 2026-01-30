@@ -99,6 +99,26 @@ export interface ItemIcon {
   [key: string]: any;
 }
 
+export interface CharacterAppearanceAsset {
+  key: string;
+  value: string;
+  file_data_id?: number;
+  [key: string]: any;
+}
+
+export interface CharacterAppearance {
+  _links?: { self?: { href?: string } };
+  assets: CharacterAppearanceAsset[];
+  character: {
+    id: number;
+    name: string;
+    key?: { href?: string };
+    realm?: { name?: string; id?: number; slug?: string; [key: string]: any };
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 export interface ItemHoverProps {
   itemName?: string;
   level?: {
@@ -110,4 +130,6 @@ export interface ItemHoverProps {
   // Optional cursor position for hover popup (viewport coordinates in px)
   x?: number;
   y?: number;
+  // If true, position the hover to the left of the cursor instead of the right
+  alignLeft?: boolean;
 }

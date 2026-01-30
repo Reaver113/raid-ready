@@ -1,0 +1,29 @@
+.itemContainer {
+  display: flex;
+  z-index: 10;
+
+  &:nth-of-type(odd) {
+    justify-content: start;
+  }
+  &:nth-of-type(even) {
+    justify-content: end;
+  }
+}
+
+.imageContainer {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Make the rendered image break out evenly left/right and be wider than the container */
+.imageContainer img {
+  position: relative;
+  transform: translateY(-5%);
+  max-width: none;
+  height: auto;
+}

@@ -103,7 +103,7 @@ export async function getCharacterAppearance(
 
   try {
     const response = await fetch(
-      `${BATTLENET_API_BASE}/profile/wow/character/${realm}/${character}/appearance?namespace=profile-us&locale=en_US`,
+      `${BATTLENET_API_BASE}/profile/wow/character/${realm}/${character}/character-media?namespace=profile-us&locale=en_US`,
       {
         headers: {
           Authorization: `Bearer ${session.access_token}`,

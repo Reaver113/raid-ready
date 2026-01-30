@@ -1,7 +1,7 @@
 "use client";
 import { WoWProfile, Character } from "@/lib/types";
 import { useEffect, useState } from "react";
-import type { Setter } from "@/lib/types";
+import type { CharacterAppearance, Setter } from "@/lib/types";
 import styles from "./character-panel.module.css";
 import { Col, Row } from "react-bootstrap";
 import fetchProfile from "@/fetch/fetchProfile";
@@ -13,9 +13,9 @@ import CharacterEquipment from "./characterEquipment/CharacterEquipment";
 import fetchAppearance from "@/fetch/fetchAppearance";
 
 export default function CharacterPanel({
-  setCharacterSelected,
+  setIsCharacterSelected,
 }: {
-  setCharacterSelected: Setter;
+  setIsCharacterSelected: Setter;
 }) {
   const [profile, setProfile] = useState<WoWProfile | null>(null);
   const [profileLoading, setProfileLoading] = useState(true);
@@ -29,7 +29,8 @@ export default function CharacterPanel({
     null,
   );
   const [characterEquipment, setCharacterEquipment] = useState<any>(null);
-  const [characterAppearance, setCharacterAppearance] = useState<any>(null);
+  const [characterAppearance, setCharacterAppearance] =
+    useState<CharacterAppearance | null>(null);
 
   useEffect(() => {
     fetchProfile({
@@ -41,7 +42,7 @@ export default function CharacterPanel({
 
   useEffect(() => {
     if (selectedCharacter) {
-      setCharacterSelected.on();
+      setIsCharacterSelected.on();
       fetchEquipment({
         setLoading: setEquipmentLoading,
         setCharacterEquipment,
@@ -49,19 +50,20 @@ export default function CharacterPanel({
         realmSlug: selectedCharacter?.realm.slug || "",
         characterName: selectedCharacter?.name.toLowerCase() || "",
       });
-      // fetchAppearance({
-      //   setLoading: setAppearanceLoading,
-      //   setCharacterAppearance,
-      //   setError: setAppearanceError,
-      //   realmSlug: selectedCharacter?.realm.slug || "",
-      //   characterName: selectedCharacter?.name.toLowerCase() || "",
-      // });
+      fetchAppearance({
+        setLoading: setAppearanceLoading,
+        setCharacterAppearance,
+        setError: setAppearanceError,
+        realmSlug: selectedCharacter?.realm.slug || "",
+        characterName: selectedCharacter?.name.toLowerCase() || "",
+      });
     }
   }, [selectedCharacter]);
 
-  console.log(selectedCharacter);
-  console.log(characterEquipment);
-  console.log(characterAppearance);
+  console.log(
+    characterAppearance?.assets?.find((asset) => asset.key === "main-raw")
+      ?.value,
+  );
   // Get all unique realms from the profile
   const allCharacters =
     profile?.wow_accounts?.flatMap((a) => a.characters) || [];
@@ -103,6 +105,12 @@ export default function CharacterPanel({
           loading={equipmentLoading}
           error={equipmentError}
           characterEquipment={characterEquipment}
+          appearance={
+            characterAppearance?.assets?.find(
+              (asset) => asset.key === "main-raw",
+            )?.value
+          }
+          appearanceLoading={appearanceLoading}
         />
       )}
     </Col>
