@@ -62,7 +62,7 @@ const Item = ({ item, index }: { item: EquippedItem; index: number }) => {
   }, []);
 
   if (loading) {
-    return <LoadingWheel />;
+    return <LoadingWheel size={32} />;
   }
   if (error) return <div>Error: {error}</div>;
   if (itemIcon?.assets?.[0]?.value) {

@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/lib/auth";
-import { getItem } from "@/lib/api";
+import { getEncounter } from "@/lib/api";
 import { Session } from "next-auth";
 
 export async function GET(request: Request) {
@@ -16,23 +16,14 @@ export async function GET(request: Request) {
     }
 
     const url = new URL(request.url);
-    const itemIdParam = url.searchParams.get("itemId");
+    const encounterId = Number(url.searchParams.get("encounterId"));
 
-    if (!itemIdParam) {
-      return Response.json(
-        {
-          error: "Missing required query parameters: itemId",
-        },
-        { status: 400 },
-      );
-    }
-
-    const appearance = await getItem(session, Number(itemIdParam));
-    return Response.json(appearance);
+    const equipment = await getEncounter(session, encounterId);
+    return Response.json(equipment);
   } catch (error) {
-    console.error("Error fetching item image:", error);
+    console.error("Error fetching expansion data:", error);
     return Response.json(
-      { error: "Failed to fetch item image" },
+      { error: "Failed to fetch expansion data" },
       { status: 500 },
     );
   }

@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/lib/auth";
-import { getItem } from "@/lib/api";
+import { getItemImage } from "@/lib/api";
 import { Session } from "next-auth";
 
 export async function GET(request: Request) {
@@ -27,7 +27,7 @@ export async function GET(request: Request) {
       );
     }
 
-    const appearance = await getItem(session, Number(itemIdParam));
+    const appearance = await getItemImage(session, Number(itemIdParam));
     return Response.json(appearance);
   } catch (error) {
     console.error("Error fetching item image:", error);

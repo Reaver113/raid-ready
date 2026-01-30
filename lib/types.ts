@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 
+export type Difficulty = { id: string; name: string };
+
 export interface WoWProfile {
   id: number;
   wow_accounts: Array<{
@@ -99,6 +101,16 @@ export interface ItemIcon {
   [key: string]: any;
 }
 
+export interface ItemDetail {
+  id: number;
+  name?: string;
+  level?: { value?: number; display_string?: string } | null;
+  quality?: { type?: string; name?: string; [key: string]: any } | null;
+  media?: { id?: number; key?: { href?: string }; [key: string]: any } | null;
+  assets?: Array<Record<string, any>>;
+  [key: string]: any;
+}
+
 export interface CharacterAppearanceAsset {
   key: string;
   value: string;
@@ -119,6 +131,103 @@ export interface CharacterAppearance {
   [key: string]: any;
 }
 
+export interface JournalInstanceRef {
+  id: number;
+  name: string;
+  key?: { href?: string };
+  [key: string]: any;
+}
+
+export interface JournalEncounterRef {
+  id: number;
+  name: string;
+  key?: { href?: string };
+  [key: string]: any;
+}
+
+export interface JournalInstanceDetail {
+  _links?: { self?: { href?: string } };
+  id: number;
+  name: string;
+  map?: { id?: number; name?: string; [key: string]: any };
+  description?: string;
+  encounters?: JournalEncounterRef[];
+  expansion?: {
+    id?: number;
+    name?: string;
+    key?: { href?: string };
+    [key: string]: any;
+  };
+  modes?: JournalInstanceMode[];
+  media?: { id?: number; key?: { href?: string }; [key: string]: any };
+  category?: { type?: string; [key: string]: any };
+  order_index?: number;
+  [key: string]: any;
+}
+
+export interface JournalInstanceMode {
+  mode?: { type?: string; name?: string };
+  players?: number;
+  is_tracked?: boolean;
+  [key: string]: any;
+}
+
+export interface JournalEncounterCreature {
+  id: number;
+  name: string;
+  creature_display?: {
+    key?: { href?: string };
+    id?: number;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
+export interface JournalEncounterItemRef {
+  id: number;
+  item?: {
+    key?: { href?: string };
+    name?: string;
+    id?: number;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
+export interface JournalEncounterSection {
+  id: number;
+  title?: string;
+  body_text?: string;
+  spell?: { id?: number; [key: string]: any };
+  sections?: JournalEncounterSection[];
+  [key: string]: any;
+}
+
+export interface JournalEncounterDetail {
+  _links?: { self?: { href?: string } };
+  id: number;
+  name: string;
+  description?: string;
+  creatures?: JournalEncounterCreature[];
+  items?: JournalEncounterItemRef[];
+  sections?: JournalEncounterSection[];
+  instance?:
+    | JournalInstanceRef
+    | { key?: { href?: string }; name?: string; id?: number };
+  modes?: JournalInstanceMode[];
+  category?: { type?: string; [key: string]: any };
+  [key: string]: any;
+}
+
+export interface CurrentExpansion {
+  _links?: { self?: { href?: string } };
+  id: number;
+  name: string;
+  dungeons: JournalInstanceRef[];
+  raids: JournalInstanceRef[];
+  [key: string]: any;
+}
+
 export interface ItemHoverProps {
   itemName?: string;
   level?: {
@@ -127,9 +236,7 @@ export interface ItemHoverProps {
     [key: string]: any;
   } | null;
   quality?: { type?: string; name?: string; [key: string]: any } | null;
-  // Optional cursor position for hover popup (viewport coordinates in px)
   x?: number;
   y?: number;
-  // If true, position the hover to the left of the cursor instead of the right
   alignLeft?: boolean;
 }

@@ -18,12 +18,22 @@
   width: 100%;
   overflow: hidden;
   z-index: 1;
+  bottom: 0;
 }
 
-/* Make the rendered image break out evenly left/right and be wider than the container */
 .imageContainer img {
   position: relative;
-  transform: translateY(-5%);
   max-width: none;
   height: auto;
+}
+
+.error {
+  color: var(--cl-orange);
+}
+
+.equipmentContainer {
+  display: flex;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
 }

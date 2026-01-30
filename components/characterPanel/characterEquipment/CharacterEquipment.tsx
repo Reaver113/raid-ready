@@ -6,6 +6,7 @@ import { Col, Row } from "react-bootstrap";
 
 import styles from "./character-equipment.module.css";
 import CharacterImage from "@/components/characterImage/CharacterImage";
+import Image from "next/image";
 
 type Props = {
   loading: boolean;
@@ -13,6 +14,7 @@ type Props = {
   characterEquipment: CharacterEquipment | null;
   appearance: string | undefined;
   appearanceLoading?: boolean;
+  appearanceError?: string | null;
 };
 
 const CharacterEquipment = ({
@@ -21,18 +23,19 @@ const CharacterEquipment = ({
   characterEquipment,
   appearance,
   appearanceLoading,
+  appearanceError,
 }: Props) => {
   if (loading) {
     return <LoadingWheel />;
   }
 
   if (error) {
-    return <div className="text-red-500">Error: {error}</div>;
+    return <div className={styles.error}>Error: {error}</div>;
   }
 
   return (
-    <Bubble xs={12} type="solid">
-      <Row style={{ position: "relative" }}>
+    <Bubble xs={12} type="outline">
+      <Row className={styles.equipmentContainer}>
         {characterEquipment?.equipped_items.map((item, index) => (
           <Col
             xs={6}
@@ -43,11 +46,13 @@ const CharacterEquipment = ({
           </Col>
         ))}
         <Col xs={12} className={styles.imageContainer}>
-          {(appearance || appearanceLoading) && (
+          {(appearance || appearanceLoading) && !appearanceError ? (
             <CharacterImage
               appearance={appearance}
               appearanceLoading={appearanceLoading}
             />
+          ) : (
+            <div className={styles.error}>Error: {appearanceError}</div>
           )}
         </Col>
       </Row>

@@ -1,9 +1,14 @@
 "use client";
 import { WoWProfile, Character } from "@/lib/types";
 import { useEffect, useState } from "react";
-import type { CharacterAppearance, Setter } from "@/lib/types";
+import type {
+  CharacterAppearance,
+  JournalInstanceRef,
+  JournalInstanceMode,
+  Setter,
+} from "@/lib/types";
 import styles from "./character-panel.module.css";
-import { Col, Row } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import fetchProfile from "@/fetch/fetchProfile";
 import CharacterSelect from "./characterSelect/CharacterSelect";
 import CharacterInfo from "./characterInfo/CharacterInfo";
@@ -11,12 +16,22 @@ import fetchEquipment from "@/fetch/fetchEquipment";
 import LoadingWheel from "@/components/shared/loadingWheel/LoadingWheel";
 import CharacterEquipment from "./characterEquipment/CharacterEquipment";
 import fetchAppearance from "@/fetch/fetchAppearance";
+import RaidSelect from "./raidSelect/RaidSelect";
+import IlvlCalculation from "../ilvlCalculation/IlvlCalculation";
 
 export default function CharacterPanel({
   setIsCharacterSelected,
 }: {
   setIsCharacterSelected: Setter;
 }) {
+  const [firstRaidEncounterId, setFirstRaidEncounterId] = useState<
+    string | null
+  >(null);
+  const [selectedRaid, setSelectedRaid] = useState<JournalInstanceRef | null>(
+    null,
+  );
+  const [selectedDifficulty, setSelectedDifficulty] =
+    useState<JournalInstanceMode | null>(null);
   const [profile, setProfile] = useState<WoWProfile | null>(null);
   const [profileLoading, setProfileLoading] = useState(true);
   const [equipmentLoading, setEquipmentLoading] = useState(false);
@@ -59,11 +74,6 @@ export default function CharacterPanel({
       });
     }
   }, [selectedCharacter]);
-
-  console.log(
-    characterAppearance?.assets?.find((asset) => asset.key === "main-raw")
-      ?.value,
-  );
   // Get all unique realms from the profile
   const allCharacters =
     profile?.wow_accounts?.flatMap((a) => a.characters) || [];
@@ -101,6 +111,22 @@ export default function CharacterPanel({
       />
       {selectedCharacter && <CharacterInfo {...selectedCharacter} />}
       {selectedCharacter && (
+        <RaidSelect
+          setFirstRaidEncounterId={setFirstRaidEncounterId}
+          selectedRaid={selectedRaid}
+          setSelectedRaid={setSelectedRaid}
+          selectedDifficulty={selectedDifficulty}
+          setSelectedDifficulty={setSelectedDifficulty}
+        />
+      )}
+      {selectedRaid && selectedDifficulty && (
+        <IlvlCalculation
+          firstRaidEncounterId={firstRaidEncounterId}
+          selectedRaid={selectedRaid}
+          selectedDifficulty={selectedDifficulty}
+        />
+      )}
+      {selectedCharacter && (
         <CharacterEquipment
           loading={equipmentLoading}
           error={equipmentError}
@@ -110,6 +136,7 @@ export default function CharacterPanel({
               (asset) => asset.key === "main-raw",
             )?.value
           }
+          appearanceError={appearanceError}
           appearanceLoading={appearanceLoading}
         />
       )}
