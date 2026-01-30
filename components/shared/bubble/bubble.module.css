@@ -1,14 +1,17 @@
 .solid {
+  position: relative;
   border-radius: 12px;
-  border: 2px solid var(--cl-orange);
   background-color: var(--cl-orange);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 16px;
+  padding: 12px;
+  overflow: hidden;
 }
 
 .outline {
+  position: relative;
   border-radius: 12px;
-  border: 2px dashed var(--cl-orange);
+  border: 2px solid var(--cl-orange);
   background-color: transparent;
-  padding: 16px;
+  padding: 12px;
+  overflow: hidden;
 }
