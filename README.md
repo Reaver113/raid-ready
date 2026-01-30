@@ -60,3 +60,9 @@ Fetching of additonal information for selected characters such as item Level, Cl
 #### Possible difficulties
 
 The handling of multiple API returns and passing information through multiple components could exponentially increase the complexity of this project.
+
+## Week Three
+
+Implementation of API call for character equipment and further call for individual equipment Icon, added hover box for item information
+
+![Items](./public/screenshots/development_items.jpg)
