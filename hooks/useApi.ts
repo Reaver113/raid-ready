@@ -2,8 +2,28 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import type { UseFetchOptions, UseFetchReturn } from "@/lib/types";
+import type {
+  WoWProfile,
+  CharacterEquipmentProps,
+  CharacterAppearanceProps,
+  ItemDetail,
+  ItemIcon,
+  JournalEncounterDetail,
+  JournalInstanceDetail,
+  CurrentExpansion,
+} from "@/lib/types";
 
-export function useApi<T = unknown>(
+type PossibleEndpointTypes =
+  | WoWProfile
+  | CharacterEquipmentProps
+  | CharacterAppearanceProps
+  | ItemDetail
+  | ItemIcon
+  | JournalEncounterDetail
+  | JournalInstanceDetail
+  | CurrentExpansion;
+
+export function useApi<T = PossibleEndpointTypes>(
   url: string | null,
   params?: Record<string, string | number>,
   options: UseFetchOptions = {},
