@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import LoadingWheel from "../shared/loadingWheel/LoadingWheel";
 import type {
+  CharacterEquipmentProps,
   JournalEncounterDetail,
   JournalInstanceMode,
   JournalInstanceRef,
@@ -8,14 +9,18 @@ import type {
 } from "@/lib/types";
 import fetchEncounter from "@/fetch/fetchEncounter";
 import fetchItem from "@/fetch/fetchItem";
+import styles from "./ilvl-calculation.module.css";
+import { Col, Row } from "react-bootstrap";
 
 type Props = {
+  characterEquipment: CharacterEquipmentProps | null;
   selectedRaid: JournalInstanceRef;
   selectedDifficulty: JournalInstanceMode;
   firstRaidEncounterId: string | null;
 };
 
 const IlvlCalculation = ({
+  characterEquipment,
   selectedRaid,
   selectedDifficulty,
   firstRaidEncounterId,
@@ -40,8 +45,6 @@ const IlvlCalculation = ({
     }
   }, [selectedRaid, selectedDifficulty, firstRaidEncounterId]);
 
-  console.log(encounter);
-
   useEffect(() => {
     if (encounter?.items) {
       for (const item of encounter.items) {
@@ -59,15 +62,86 @@ const IlvlCalculation = ({
     }
   }, [encounter]);
 
-  console.log(dropedItemLevel);
+  console.log("Drops List:", dropsList);
+
+  function getAverageEquippedIvl(characterEquipment: CharacterEquipmentProps) {
+    const equippedItems = characterEquipment.equipped_items || [];
+
+    // Extract item levels, filtering out undefined/null values
+    const itemLevels = equippedItems
+      .map((item) => item.level?.value)
+      .filter((level): level is number => typeof level === "number");
+
+    if (itemLevels.length === 0) return 0;
+
+    const sum = itemLevels.reduce((total, level) => total + level, 0);
+    return Math.round(sum / itemLevels.length);
+  }
+
+  function getMostCommonIlvl(items: ItemDetail[]) {
+    if (items.length === 0) return 0;
+
+    const levelCounts: Record<number, number> = {};
+
+    // Count occurrences of each level
+    items.forEach((item) => {
+      const level = item?.level || 0;
+      levelCounts[level] = (levelCounts[level] || 0) + 1;
+    });
+
+    // Find the level with the highest count
+    let mostCommonLevel = 0;
+    let maxCount = 0;
+
+    for (const [level, count] of Object.entries(levelCounts)) {
+      if (count > maxCount) {
+        maxCount = count;
+        mostCommonLevel = parseInt(level);
+      }
+    }
+
+    return mostCommonLevel;
+  }
+
+  const requiredIlvl = getMostCommonIlvl(dropsList || []) - 15;
+  const currentAverageIlvl = characterEquipment
+    ? getAverageEquippedIvl(characterEquipment)
+    : 0;
+
+  console.log("Required iLvl:", requiredIlvl);
+  console.log("Current Average iLvl:", currentAverageIlvl);
+
+  const isAboveRequirement = currentAverageIlvl >= requiredIlvl;
+
+  const currentIlvlStyles = isAboveRequirement
+    ? styles.aboveRequirement
+    : styles.belowRequirement;
 
   if (loading) return <LoadingWheel />;
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div style={{ color: "var(--cl-orange)" }}>
-      {dropsList?.[0]?.level?.toString()}
-    </div>
+    <>
+      <Row>
+        <Col className={styles.ilvlContainer}>
+          <div className={styles.label}>Your Item Level:</div>
+          <div className={`${styles.currentIlvl} ${currentIlvlStyles}`}>
+            {currentAverageIlvl}
+          </div>
+        </Col>
+        <Col className={styles.ilvlContainer}>
+          <div className={styles.label}>Required Item Level:</div>
+          <div className={styles.requiredIlvl}>{requiredIlvl}</div>
+        </Col>
+      </Row>
+      <Row>
+        <Col className={`${styles.infoText} ${currentIlvlStyles}`}>
+          {isAboveRequirement
+            ? "You meet the item level requirement for this raid encounter!"
+            : "You do not meet the item level requirement for this raid encounter."}
+        </Col>
+      </Row>
+    </>
   );
 };
 
