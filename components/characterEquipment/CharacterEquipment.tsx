@@ -33,7 +33,7 @@ const CharacterEquipment = ({
   }
 
   return (
-    <Bubble xs={12} type="outline">
+    <Bubble type="outline">
       <Row className={styles.equipmentContainer}>
         {characterEquipment?.equipped_items.map((item, index) => (
           <Col

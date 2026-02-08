@@ -22,8 +22,8 @@ const CharacterSelect = ({
   setSelectedCharacter,
 }: CharacterSelectProps) => {
   return (
-    <Row className={styles.characterSelect}>
-      <Col xs={12}>
+    <Row>
+      <Col xs={6}>
         <label className={styles.label}>Select Realm</label>
         <Dropdown
           items={uniqueRealms}
@@ -36,7 +36,7 @@ const CharacterSelect = ({
           placeholder="Choose a realm..."
         />
       </Col>
-      <Col xs={12}>
+      <Col xs={6}>
         <label className={styles.label}>Select Character</label>
         <Dropdown
           items={charactersInRealm}

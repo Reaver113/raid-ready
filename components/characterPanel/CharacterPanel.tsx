@@ -7,8 +7,8 @@ import type {
   Setter,
 } from "@/lib/types";
 import styles from "./character-panel.module.css";
-import { Col } from "react-bootstrap";
-import CharacterSelect from "./characterSelect/CharacterSelect";
+import { Col, Row } from "react-bootstrap";
+import CharacterSelect from "../characterSelect/CharacterSelect";
 import CharacterInfo from "@/components/characterInfo/CharacterInfo";
 import LoadingWheel from "@/components/shared/loadingWheel/LoadingWheel";
 import RaidSelect from "@/components/raidSelect/RaidSelect";
@@ -104,37 +104,44 @@ export default function CharacterPanel({
         setSelectedCharacter={setSelectedCharacter}
       />
       {selectedCharacter && <CharacterInfo {...selectedCharacter} />}
-      {selectedCharacter && (
-        <RaidSelect
-          setFirstRaidEncounterId={setFirstRaidEncounterId}
-          selectedRaid={selectedRaid}
-          setSelectedRaid={setSelectedRaid}
-          selectedDifficulty={selectedDifficulty}
-          setSelectedDifficulty={setSelectedDifficulty}
-        />
-      )}
-      {selectedRaid && selectedDifficulty && (
-        <IlvlCalculation
-          characterEquipment={characterEquipment}
-          firstRaidEncounterId={firstRaidEncounterId}
-          selectedRaid={selectedRaid}
-          selectedDifficulty={selectedDifficulty}
-        />
-      )}
-      {selectedCharacter && (
-        <CharacterEquipment
-          loading={equipmentLoading}
-          error={equipmentError}
-          characterEquipment={characterEquipment}
-          appearance={
-            characterAppearance?.assets?.find(
-              (asset) => asset.key === "main-raw",
-            )?.value
-          }
-          appearanceError={appearanceError}
-          appearanceLoading={appearanceLoading}
-        />
-      )}
+      <Row>
+        <Col xs={12} md={6} className={styles.infoContainer}>
+          {selectedCharacter && (
+            <RaidSelect
+              setFirstRaidEncounterId={setFirstRaidEncounterId}
+              selectedRaid={selectedRaid}
+              setSelectedRaid={setSelectedRaid}
+              selectedDifficulty={selectedDifficulty}
+              setSelectedDifficulty={setSelectedDifficulty}
+            />
+          )}
+
+          {selectedRaid && selectedDifficulty && (
+            <IlvlCalculation
+              characterEquipment={characterEquipment}
+              firstRaidEncounterId={firstRaidEncounterId}
+              selectedRaid={selectedRaid}
+              selectedDifficulty={selectedDifficulty}
+            />
+          )}
+        </Col>
+        {selectedCharacter && (
+          <Col xs={12} md={6}>
+            <CharacterEquipment
+              loading={equipmentLoading}
+              error={equipmentError}
+              characterEquipment={characterEquipment}
+              appearance={
+                characterAppearance?.assets?.find(
+                  (asset) => asset.key === "main-raw",
+                )?.value
+              }
+              appearanceError={appearanceError}
+              appearanceLoading={appearanceLoading}
+            />
+          </Col>
+        )}
+      </Row>
     </Col>
   );
 }

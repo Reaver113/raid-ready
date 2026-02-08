@@ -19,11 +19,11 @@
     font-weight: bold;
 
     &.aboveRequirement {
-      color: green;
+      color: var(--cl-green);
     }
 
     &.belowRequirement {
-      color: red;
+      color: var(--cl-red);
     }
   }
 }
@@ -33,10 +33,10 @@
   font-size: 1rem;
   text-align: center;
   &.aboveRequirement {
-    color: green;
+    color: var(--cl-green);
   }
 
   &.belowRequirement {
-    color: red;
+    color: var(--cl-red);
   }
 }

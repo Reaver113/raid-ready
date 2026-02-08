@@ -12,6 +12,8 @@ import type {
 } from "@/lib/types";
 import { Col, Row } from "react-bootstrap";
 
+import styles from "./raid-select.module.css";
+
 type Props = {
   selectedRaid: JournalInstanceRef | null;
   setSelectedRaid: (raid: JournalInstanceRef | null) => void;
@@ -58,40 +60,46 @@ const RaidSelect = ({
 
   return (
     <Row>
-      <Col xs={7}>
+      <Col xs={6} md={12} className={styles.raidSelectContainer}>
         {expansionError ? (
           <div>Error: {expansionError}</div>
         ) : expansionLoading ? (
           <LoadingWheel size={24} />
         ) : (
-          <Dropdown
-            items={raids}
-            value={selectedRaid ?? undefined}
-            onChange={(raid) => {
-              setSelectedRaid(raid);
-              setSelectedDifficulty(null);
-            }}
-            getLabel={(raid) => raid.name}
-            placeholder="Choose a raid..."
-          />
+          <>
+            <label className={styles.label}>Select Raid</label>
+            <Dropdown
+              items={raids}
+              value={selectedRaid ?? undefined}
+              onChange={(raid) => {
+                setSelectedRaid(raid);
+                setSelectedDifficulty(null);
+              }}
+              getLabel={(raid) => raid.name}
+              placeholder="Choose a raid..."
+            />
+          </>
         )}
       </Col>
-      <Col xs={5}>
+      <Col xs={6} md={12} className={styles.raidSelectContainer}>
         {instanceError ? (
           <div>Error: {instanceError}</div>
         ) : instanceLoading ? (
           <LoadingWheel size={24} />
         ) : (
           modes && (
-            <Dropdown
-              items={modes}
-              value={selectedDifficulty ?? undefined}
-              onChange={(difficulty) => setSelectedDifficulty(difficulty)}
-              getLabel={(difficulty) =>
-                difficulty.mode?.name || difficulty.mode?.type || ""
-              }
-              placeholder="Difficulty..."
-            />
+            <>
+              <label className={styles.label}>Select Difficulty</label>
+              <Dropdown
+                items={modes}
+                value={selectedDifficulty ?? undefined}
+                onChange={(difficulty) => setSelectedDifficulty(difficulty)}
+                getLabel={(difficulty) =>
+                  difficulty.mode?.name || difficulty.mode?.type || ""
+                }
+                placeholder="Difficulty..."
+              />
+            </>
           )
         )}
       </Col>

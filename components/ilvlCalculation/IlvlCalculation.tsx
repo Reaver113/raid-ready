@@ -100,32 +100,35 @@ const IlvlCalculation = ({
     ? styles.aboveRequirement
     : styles.belowRequirement;
 
-  if (loading) return <LoadingWheel />;
-  if (error) return <div>Error: {error}</div>;
+  const displayedContent = () => {
+    if (loading) return <LoadingWheel />;
+    if (error) return <div>Error: {error}</div>;
+    return (
+      <>
+        <Row>
+          <Col className={styles.ilvlContainer}>
+            <div className={styles.label}>Your Item Level:</div>
+            <div className={`${styles.currentIlvl} ${currentIlvlStyles}`}>
+              {currentAverageIlvl}
+            </div>
+          </Col>
+          <Col className={styles.ilvlContainer}>
+            <div className={styles.label}>Required Item Level:</div>
+            <div className={styles.requiredIlvl}>{requiredIlvl}</div>
+          </Col>
+        </Row>
+        <Row>
+          <Col className={`${styles.infoText} ${currentIlvlStyles}`}>
+            {isAboveRequirement
+              ? "You meet the item level requirement for this raid encounter!"
+              : "You do not meet the item level requirement for this raid encounter."}
+          </Col>
+        </Row>
+      </>
+    );
+  };
 
-  return (
-    <>
-      <Row>
-        <Col className={styles.ilvlContainer}>
-          <div className={styles.label}>Your Item Level:</div>
-          <div className={`${styles.currentIlvl} ${currentIlvlStyles}`}>
-            {currentAverageIlvl}
-          </div>
-        </Col>
-        <Col className={styles.ilvlContainer}>
-          <div className={styles.label}>Required Item Level:</div>
-          <div className={styles.requiredIlvl}>{requiredIlvl}</div>
-        </Col>
-      </Row>
-      <Row>
-        <Col className={`${styles.infoText} ${currentIlvlStyles}`}>
-          {isAboveRequirement
-            ? "You meet the item level requirement for this raid encounter!"
-            : "You do not meet the item level requirement for this raid encounter."}
-        </Col>
-      </Row>
-    </>
-  );
+  return <Col xs={12}>{displayedContent()}</Col>;
 };
 
 export default IlvlCalculation;
