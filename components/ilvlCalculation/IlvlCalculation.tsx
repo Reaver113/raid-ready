@@ -7,8 +7,7 @@ import type {
   JournalInstanceRef,
   ItemDetail,
 } from "@/lib/types";
-import fetchEncounter from "@/fetch/fetchEncounter";
-import fetchItem from "@/fetch/fetchItem";
+import { useEncounter, useItems } from "@/hooks/useEndpoints";
 import styles from "./ilvl-calculation.module.css";
 import { Col, Row } from "react-bootstrap";
 
@@ -25,42 +24,26 @@ const IlvlCalculation = ({
   selectedDifficulty,
   firstRaidEncounterId,
 }: Props) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [encounter, setEncounter] = useState<JournalEncounterDetail | null>(
-    null,
-  );
-  const [dropsList, setDropsList] = useState<ItemDetail[] | null>(null);
+  const {
+    data: encounter,
+    loading: encounterLoading,
+    error: encounterError,
+  } = useEncounter(firstRaidEncounterId);
+
+  const itemIds =
+    encounter?.items
+      ?.map((item) => item.item?.id)
+      .filter((id): id is number => !!id) || [];
+  const {
+    data: dropsList,
+    loading: itemsLoading,
+    error: itemsError,
+  } = useItems(itemIds);
 
   const [dropedItemLevel, setDropedItemLevel] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (selectedRaid && selectedDifficulty && firstRaidEncounterId) {
-      fetchEncounter({
-        setLoading,
-        setEncounter,
-        setError,
-        encounterId: firstRaidEncounterId,
-      });
-    }
-  }, [selectedRaid, selectedDifficulty, firstRaidEncounterId]);
-
-  useEffect(() => {
-    if (encounter?.items) {
-      for (const item of encounter.items) {
-        if (item.item?.id) {
-          fetchItem({
-            setLoading,
-            setItem: (itemData) => {
-              setDropsList((prev) => (prev ? [...prev, itemData] : [itemData]));
-            },
-            setError,
-            itemId: item.item.id,
-          });
-        }
-      }
-    }
-  }, [encounter]);
+  const loading = encounterLoading || itemsLoading;
+  const error = encounterError || itemsError;
 
   console.log("Drops List:", dropsList);
 
@@ -103,7 +86,7 @@ const IlvlCalculation = ({
     return mostCommonLevel;
   }
 
-  const requiredIlvl = getMostCommonIlvl(dropsList || []) - 15;
+  const requiredIlvl = dropsList && getMostCommonIlvl(dropsList) - 15;
   const currentAverageIlvl = characterEquipment
     ? getAverageEquippedIvl(characterEquipment)
     : 0;
@@ -111,7 +94,7 @@ const IlvlCalculation = ({
   console.log("Required iLvl:", requiredIlvl);
   console.log("Current Average iLvl:", currentAverageIlvl);
 
-  const isAboveRequirement = currentAverageIlvl >= requiredIlvl;
+  const isAboveRequirement = requiredIlvl && currentAverageIlvl >= requiredIlvl;
 
   const currentIlvlStyles = isAboveRequirement
     ? styles.aboveRequirement

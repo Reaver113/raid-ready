@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Dropdown } from "../../shared/dropdown/Dropdown";
-import fetchCurrentExpansion from "@/fetch/fetchExpansion";
+import { useCurrentExpansion, useInstance } from "@/hooks/useEndpoints";
 import LoadingWheel from "../../shared/loadingWheel/LoadingWheel";
 import type {
   CurrentExpansion,
@@ -11,7 +11,6 @@ import type {
   JournalInstanceMode,
 } from "@/lib/types";
 import { Col, Row } from "react-bootstrap";
-import fetchInstance from "@/fetch/fetchInstance";
 
 type Props = {
   selectedRaid: JournalInstanceRef | null;
@@ -27,41 +26,26 @@ const RaidSelect = ({
   setSelectedDifficulty,
   setFirstRaidEncounterId,
 }: Props) => {
-  const [currentExpansion, setCurrentExpansion] =
-    useState<CurrentExpansion | null>(null);
-  const [currentInstance, setCurrentInstance] =
-    useState<JournalInstanceDetail | null>(null);
-  const [instanceLoading, setInstanceLoading] = useState<boolean>(false);
-  const [instanceError, setInstanceError] = useState<string | null>(null);
-  const [expansionLoading, setExpansionLoading] = useState<boolean>(false);
-  const [expansionError, setExpansionError] = useState<string | null>(null);
+  const {
+    data: currentExpansion,
+    loading: expansionLoading,
+    error: expansionError,
+  } = useCurrentExpansion();
+
+  const {
+    data: currentInstance,
+    loading: instanceLoading,
+    error: instanceError,
+  } = useInstance(selectedRaid?.id || null);
+
   const [modes, setModes] = useState<JournalInstanceMode[] | null>(null);
   const [raids, setRaids] = useState<JournalInstanceRef[]>([]);
-
-  useEffect(() => {
-    fetchCurrentExpansion({
-      setCurrentExpansion,
-      setLoading: setExpansionLoading,
-      setError: setExpansionError,
-    });
-  }, []);
 
   useEffect(() => {
     if (currentExpansion) {
       setRaids(currentExpansion.raids || []);
     }
   }, [currentExpansion]);
-
-  useEffect(() => {
-    if (selectedRaid) {
-      fetchInstance({
-        setLoading: setInstanceLoading,
-        setCurrentInstance,
-        setError: setInstanceError,
-        instanceId: selectedRaid.id,
-      });
-    }
-  }, [selectedRaid]);
 
   useEffect(() => {
     if (currentInstance) {
@@ -75,7 +59,9 @@ const RaidSelect = ({
   return (
     <Row>
       <Col xs={7}>
-        {expansionLoading ? (
+        {expansionError ? (
+          <div>Error: {expansionError}</div>
+        ) : expansionLoading ? (
           <LoadingWheel size={24} />
         ) : (
           <Dropdown
@@ -91,7 +77,9 @@ const RaidSelect = ({
         )}
       </Col>
       <Col xs={5}>
-        {instanceLoading ? (
+        {instanceError ? (
+          <div>Error: {instanceError}</div>
+        ) : instanceLoading ? (
           <LoadingWheel size={24} />
         ) : (
           modes && (

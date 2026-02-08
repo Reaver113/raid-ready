@@ -1,24 +1,24 @@
 "use client";
-import { WoWProfile, Character } from "@/lib/types";
+import { Character } from "@/lib/types";
 import { useEffect, useState } from "react";
 import type {
-  CharacterAppearanceProps,
-  CharacterEquipmentProps,
   JournalInstanceRef,
   JournalInstanceMode,
   Setter,
 } from "@/lib/types";
 import styles from "./character-panel.module.css";
 import { Col } from "react-bootstrap";
-import fetchProfile from "@/fetch/fetchProfile";
 import CharacterSelect from "./characterSelect/CharacterSelect";
 import CharacterInfo from "./characterInfo/CharacterInfo";
-import fetchEquipment from "@/fetch/fetchEquipment";
 import LoadingWheel from "@/components/shared/loadingWheel/LoadingWheel";
-import fetchAppearance from "@/fetch/fetchAppearance";
 import RaidSelect from "./raidSelect/RaidSelect";
 import IlvlCalculation from "../ilvlCalculation/IlvlCalculation";
 import CharacterEquipment from "./characterEquipment/CharacterEquipment";
+import {
+  useProfile,
+  useCharacterEquipment,
+  useCharacterAppearance,
+} from "@/hooks/useEndpoints";
 
 export default function CharacterPanel({
   setIsCharacterSelected,
@@ -33,49 +33,41 @@ export default function CharacterPanel({
   );
   const [selectedDifficulty, setSelectedDifficulty] =
     useState<JournalInstanceMode | null>(null);
-  const [profile, setProfile] = useState<WoWProfile | null>(null);
-  const [profileLoading, setProfileLoading] = useState(true);
-  const [equipmentLoading, setEquipmentLoading] = useState(false);
-  const [equipmentError, setEquipmentError] = useState<string | null>(null);
-  const [appearanceLoading, setAppearanceLoading] = useState(false);
-  const [appearanceError, setAppearanceError] = useState<string | null>(null);
-  const [profileError, setProfileError] = useState<string | null>(null);
   const [selectedRealm, setSelectedRealm] = useState<string | null>(null);
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
     null,
   );
-  const [characterEquipment, setCharacterEquipment] =
-    useState<CharacterEquipmentProps | null>(null);
-  const [characterAppearance, setCharacterAppearance] =
-    useState<CharacterAppearanceProps | null>(null);
 
-  useEffect(() => {
-    fetchProfile({
-      setLoading: setProfileLoading,
-      setProfile,
-      setError: setProfileError,
-    });
-  }, []);
+  const {
+    data: profile,
+    loading: profileLoading,
+    error: profileError,
+  } = useProfile();
+
+  const {
+    data: characterEquipment,
+    loading: equipmentLoading,
+    error: equipmentError,
+  } = useCharacterEquipment(
+    selectedCharacter?.realm.slug || null,
+    selectedCharacter?.name || null,
+  );
+
+  const {
+    data: characterAppearance,
+    loading: appearanceLoading,
+    error: appearanceError,
+  } = useCharacterAppearance(
+    selectedCharacter?.realm.slug || null,
+    selectedCharacter?.name || null,
+  );
 
   useEffect(() => {
     if (selectedCharacter) {
       setIsCharacterSelected.on();
-      fetchEquipment({
-        setLoading: setEquipmentLoading,
-        setCharacterEquipment,
-        setError: setEquipmentError,
-        realmSlug: selectedCharacter?.realm.slug || "",
-        characterName: selectedCharacter?.name.toLowerCase() || "",
-      });
-      fetchAppearance({
-        setLoading: setAppearanceLoading,
-        setCharacterAppearance,
-        setError: setAppearanceError,
-        realmSlug: selectedCharacter?.realm.slug || "",
-        characterName: selectedCharacter?.name.toLowerCase() || "",
-      });
     }
   }, [selectedCharacter]);
+
   // Get all unique realms from the profile
   const allCharacters =
     profile?.wow_accounts?.flatMap((a) => a.characters) || [];
