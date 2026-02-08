@@ -9,11 +9,11 @@ import type {
 import styles from "./character-panel.module.css";
 import { Col } from "react-bootstrap";
 import CharacterSelect from "./characterSelect/CharacterSelect";
-import CharacterInfo from "./characterInfo/CharacterInfo";
+import CharacterInfo from "@/components/characterInfo/CharacterInfo";
 import LoadingWheel from "@/components/shared/loadingWheel/LoadingWheel";
-import RaidSelect from "./raidSelect/RaidSelect";
-import IlvlCalculation from "../ilvlCalculation/IlvlCalculation";
-import CharacterEquipment from "./characterEquipment/CharacterEquipment";
+import RaidSelect from "@/components/raidSelect/RaidSelect";
+import IlvlCalculation from "@/components/ilvlCalculation/IlvlCalculation";
+import CharacterEquipment from "@/components/characterEquipment/CharacterEquipment";
 import {
   useProfile,
   useCharacterEquipment,

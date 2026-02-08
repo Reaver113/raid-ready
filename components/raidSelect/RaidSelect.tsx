@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Dropdown } from "../../shared/dropdown/Dropdown";
+import { Dropdown } from "../shared/dropdown/Dropdown";
 import { useCurrentExpansion, useInstance } from "@/hooks/useEndpoints";
-import LoadingWheel from "../../shared/loadingWheel/LoadingWheel";
+import LoadingWheel from "../shared/loadingWheel/LoadingWheel";
 import type {
   CurrentExpansion,
   JournalInstanceDetail,
