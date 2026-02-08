@@ -1,0 +1,47 @@
+.label {
+  cursor: pointer;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--cl-orange);
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.label:hover {
+  opacity: 0.8;
+}
+
+.arrow {
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+  transform-origin: center;
+}
+
+.arrowUp {
+  transform: rotate(180deg);
+}
+
+.arrowDown {
+  transform: rotate(0deg);
+}
+
+.content {
+  overflow: hidden;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.contentExpanded {
+  max-height: 300px;
+  opacity: 1;
+}
+
+.contentCollapsed {
+  max-height: 0;
+  opacity: 0;
+}

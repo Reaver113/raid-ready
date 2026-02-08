@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Dropdown } from "../shared/dropdown/Dropdown";
 import { useCurrentExpansion, useInstance } from "@/hooks/useEndpoints";
+import { useCollapseDropdowns } from "@/hooks/useCollapseDropdowns";
 import LoadingWheel from "../shared/loadingWheel/LoadingWheel";
 import type {
   CurrentExpansion,
@@ -13,6 +14,7 @@ import type {
 import { Col, Row } from "react-bootstrap";
 
 import styles from "./raid-select.module.css";
+import CollapseDropdowns from "../shared/collapseDropdowns/CollapseDropdowns";
 
 type Props = {
   selectedRaid: JournalInstanceRef | null;
@@ -43,6 +45,12 @@ const RaidSelect = ({
   const [modes, setModes] = useState<JournalInstanceMode[] | null>(null);
   const [raids, setRaids] = useState<JournalInstanceRef[]>([]);
 
+  const { isExpanded, collapse } = useCollapseDropdowns({
+    firstValue: selectedRaid,
+    secondValue: selectedDifficulty,
+    secondValueChangeKey: selectedDifficulty?.mode?.name,
+  });
+
   useEffect(() => {
     if (currentExpansion) {
       setRaids(currentExpansion.raids || []);
@@ -59,7 +67,10 @@ const RaidSelect = ({
   }, [currentInstance]);
 
   return (
-    <Row>
+    <CollapseDropdowns
+      label={`${selectedRaid?.name} > ${selectedDifficulty?.mode?.name}`}
+      condition={isExpanded}
+    >
       <Col xs={6} md={12} className={styles.raidSelectContainer}>
         {expansionError ? (
           <div>Error: {expansionError}</div>
@@ -74,6 +85,7 @@ const RaidSelect = ({
               onChange={(raid) => {
                 setSelectedRaid(raid);
                 setSelectedDifficulty(null);
+                collapse();
               }}
               getLabel={(raid) => raid.name}
               placeholder="Choose a raid..."
@@ -93,7 +105,10 @@ const RaidSelect = ({
               <Dropdown
                 items={modes}
                 value={selectedDifficulty ?? undefined}
-                onChange={(difficulty) => setSelectedDifficulty(difficulty)}
+                onChange={(difficulty) => {
+                  setSelectedDifficulty(difficulty);
+                  collapse();
+                }}
                 getLabel={(difficulty) =>
                   difficulty.mode?.name || difficulty.mode?.type || ""
                 }
@@ -103,7 +118,7 @@ const RaidSelect = ({
           )
         )}
       </Col>
-    </Row>
+    </CollapseDropdowns>
   );
 };
 

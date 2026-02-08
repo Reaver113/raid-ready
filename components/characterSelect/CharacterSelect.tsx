@@ -1,8 +1,12 @@
 import { Realm, Character } from "@/lib/types";
-import { Col, Row } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import { Dropdown } from "@/components/shared/dropdown/Dropdown";
+import { useState, useEffect } from "react";
+import { useCollapseDropdowns } from "@/hooks/useCollapseDropdowns";
 
 import styles from "./character-select.module.css";
+import CollapseDropdowns from "../shared/collapseDropdowns/CollapseDropdowns";
+import { capitalizeFirstLetter } from "@/lib/helpers";
 
 interface CharacterSelectProps {
   uniqueRealms: Realm[];
@@ -21,8 +25,17 @@ const CharacterSelect = ({
   selectedCharacter,
   setSelectedCharacter,
 }: CharacterSelectProps) => {
+  const { isExpanded, collapse } = useCollapseDropdowns({
+    firstValue: selectedRealm,
+    secondValue: selectedCharacter,
+    secondValueChangeKey: selectedCharacter?.name,
+  });
+
   return (
-    <Row>
+    <CollapseDropdowns
+      label={`${selectedRealm && capitalizeFirstLetter(selectedRealm)} > ${selectedCharacter?.name}`}
+      condition={isExpanded}
+    >
       <Col xs={6}>
         <label className={styles.label}>Select Realm</label>
         <Dropdown
@@ -31,6 +44,7 @@ const CharacterSelect = ({
           onChange={(realm) => {
             setSelectedRealm(realm.slug);
             setSelectedCharacter(null);
+            collapse();
           }}
           getLabel={(realm) => realm.name}
           placeholder="Choose a realm..."
@@ -41,12 +55,15 @@ const CharacterSelect = ({
         <Dropdown
           items={charactersInRealm}
           value={selectedCharacter || undefined}
-          onChange={setSelectedCharacter}
+          onChange={(character) => {
+            setSelectedCharacter(character);
+            collapse();
+          }}
           getLabel={(char) => `${char.name} (Lvl ${char.level})`}
           placeholder="Choose a character..."
         />
       </Col>
-    </Row>
+    </CollapseDropdowns>
   );
 };
 export default CharacterSelect;
