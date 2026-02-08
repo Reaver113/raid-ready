@@ -6,3 +6,8 @@ export const difficulties: Difficulty[] = [
   { id: "heroic", name: "Heroic" },
   { id: "mythic", name: "Mythic" },
 ];
+
+export function capitalizeFirstLetter(string: string): string {
+  if (!string) return "";
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}

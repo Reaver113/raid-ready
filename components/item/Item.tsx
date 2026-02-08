@@ -1,37 +1,26 @@
 "use client";
 
-import fetchItemIcon from "@/fetch/fetchItemIcon";
 import useBoolean from "@/hooks/useBoolean";
 import { useEffect, useState, useCallback, useRef } from "react";
 import type React from "react";
-import type { EquippedItem, ItemIcon } from "@/lib/types";
+import type { EquippedItem } from "@/lib/types";
 import Image from "next/image";
 import LoadingWheel from "../shared/loadingWheel/LoadingWheel";
 import styles from "./item.module.css";
 import ItemHover from "./itemHover/ItemHover";
+import { useItemIcon } from "@/hooks/useEndpoints";
 
 const Item = ({ item, index }: { item: EquippedItem; index: number }) => {
-  const [loading, setLoading] = useBoolean(false);
-  const [itemIcon, setItemIcon] = useState<ItemIcon | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [hovering, setHovering] = useState(false);
   const [coords, setCoords] = useState<{ x: number; y: number } | null>(null);
 
   const id = item?.item?.id ?? item?.id;
   const containerRef = useRef<HTMLDivElement | null>(null);
 
+  const { data: itemIcon, loading, error } = useItemIcon(id || null);
+
   const effectiveIndex = (index ?? 0) + 1;
   const alignLeft = effectiveIndex % 2 === 0;
-
-  useEffect(() => {
-    if (!id) return;
-    fetchItemIcon({
-      setLoading,
-      setItemIcon,
-      setError,
-      itemId: id,
-    });
-  }, [id, setLoading]);
 
   const onEnter = useCallback(() => setHovering(true), []);
   const onLeave = useCallback(() => {

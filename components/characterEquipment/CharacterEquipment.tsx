@@ -1,17 +1,16 @@
 import Item from "@/components/item/Item";
 import Bubble from "@/components/shared/bubble/Bubble";
 import LoadingWheel from "@/components/shared/loadingWheel/LoadingWheel";
-import type { CharacterEquipment } from "@/lib/types";
+import type { CharacterEquipmentProps } from "@/lib/types";
 import { Col, Row } from "react-bootstrap";
 
 import styles from "./character-equipment.module.css";
 import CharacterImage from "@/components/characterImage/CharacterImage";
-import Image from "next/image";
 
 type Props = {
   loading: boolean;
   error: string | null;
-  characterEquipment: CharacterEquipment | null;
+  characterEquipment: CharacterEquipmentProps | null;
   appearance: string | undefined;
   appearanceLoading?: boolean;
   appearanceError?: string | null;
@@ -34,7 +33,7 @@ const CharacterEquipment = ({
   }
 
   return (
-    <Bubble xs={12} type="outline">
+    <Bubble type="outline">
       <Row className={styles.equipmentContainer}>
         {characterEquipment?.equipped_items.map((item, index) => (
           <Col

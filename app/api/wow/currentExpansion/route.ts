@@ -15,7 +15,7 @@ export async function GET(request: Request) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const expansionId = 505; //Current Expansion ID
+    const expansionId = 514; //Current Expansion ID
 
     const equipment = await getCurrentExpansion(session, expansionId);
     return Response.json(equipment);

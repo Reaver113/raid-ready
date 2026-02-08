@@ -8,3 +8,7 @@
   display: grid;
   gap: 1.5rem;
 }
+
+.infoContainer {
+  margin-bottom: 1rem;
+}
