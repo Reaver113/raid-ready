@@ -240,3 +240,21 @@ export interface ItemHoverProps {
   y?: number;
   alignLeft?: boolean;
 }
+
+export interface FetchState<T> {
+  data: T | null;
+  loading: boolean;
+  error: string | null;
+}
+
+export interface UseFetchOptions {
+  immediate?: boolean;
+  retryCount?: number;
+  retryDelay?: number;
+}
+
+export interface UseFetchReturn<T> extends FetchState<T> {
+  execute: () => Promise<void>;
+  reset: () => void;
+  setData: (data: T | null) => void;
+}
