@@ -51,7 +51,7 @@ export type Setter = ((v: boolean) => void) & {
   toggle: () => void;
 };
 
-export interface CharacterEquipment {
+export interface CharacterEquipmentProps {
   _links?: { self?: { href?: string } };
   character: {
     id: number;
@@ -104,7 +104,7 @@ export interface ItemIcon {
 export interface ItemDetail {
   id: number;
   name?: string;
-  level?: { value?: number; display_string?: string } | null;
+  level?: number | null;
   quality?: { type?: string; name?: string; [key: string]: any } | null;
   media?: { id?: number; key?: { href?: string }; [key: string]: any } | null;
   assets?: Array<Record<string, any>>;
@@ -118,7 +118,7 @@ export interface CharacterAppearanceAsset {
   [key: string]: any;
 }
 
-export interface CharacterAppearance {
+export interface CharacterAppearanceProps {
   _links?: { self?: { href?: string } };
   assets: CharacterAppearanceAsset[];
   character: {

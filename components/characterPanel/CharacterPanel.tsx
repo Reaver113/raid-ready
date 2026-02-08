@@ -2,7 +2,8 @@
 import { WoWProfile, Character } from "@/lib/types";
 import { useEffect, useState } from "react";
 import type {
-  CharacterAppearance,
+  CharacterAppearanceProps,
+  CharacterEquipmentProps,
   JournalInstanceRef,
   JournalInstanceMode,
   Setter,
@@ -14,10 +15,10 @@ import CharacterSelect from "./characterSelect/CharacterSelect";
 import CharacterInfo from "./characterInfo/CharacterInfo";
 import fetchEquipment from "@/fetch/fetchEquipment";
 import LoadingWheel from "@/components/shared/loadingWheel/LoadingWheel";
-import CharacterEquipment from "./characterEquipment/CharacterEquipment";
 import fetchAppearance from "@/fetch/fetchAppearance";
 import RaidSelect from "./raidSelect/RaidSelect";
 import IlvlCalculation from "../ilvlCalculation/IlvlCalculation";
+import CharacterEquipment from "./characterEquipment/CharacterEquipment";
 
 export default function CharacterPanel({
   setIsCharacterSelected,
@@ -43,9 +44,10 @@ export default function CharacterPanel({
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
     null,
   );
-  const [characterEquipment, setCharacterEquipment] = useState<any>(null);
+  const [characterEquipment, setCharacterEquipment] =
+    useState<CharacterEquipmentProps | null>(null);
   const [characterAppearance, setCharacterAppearance] =
-    useState<CharacterAppearance | null>(null);
+    useState<CharacterAppearanceProps | null>(null);
 
   useEffect(() => {
     fetchProfile({
@@ -121,6 +123,7 @@ export default function CharacterPanel({
       )}
       {selectedRaid && selectedDifficulty && (
         <IlvlCalculation
+          characterEquipment={characterEquipment}
           firstRaidEncounterId={firstRaidEncounterId}
           selectedRaid={selectedRaid}
           selectedDifficulty={selectedDifficulty}
