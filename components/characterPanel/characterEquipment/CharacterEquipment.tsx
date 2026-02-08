@@ -6,7 +6,6 @@ import { Col, Row } from "react-bootstrap";
 
 import styles from "./character-equipment.module.css";
 import CharacterImage from "@/components/characterImage/CharacterImage";
-import Image from "next/image";
 
 type Props = {
   loading: boolean;
