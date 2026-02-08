@@ -90,14 +90,17 @@ Reworked the way fetch calls are made by creating a useAPI hook that can manage 
 Finished Calculation of Player Ilvl vs Raid Ilvl by getting the average of the players equipped gear, and comparing it to the most reoccuring Ilvl of the gear dropped by the first encounter of that raid.
 
 ![Ilvl_Above](./public/screenshots/Development_Ilvl_Above.jpg)
+
 ![Ilvl_Below](./public/screenshots/Development_Ilvl_Below.jpg)
 
 Created CollapseDropdown component to reduce screen space of dropdowns once the conditions for them are met, and a hook to manage those conditions, and a re trigger of the collapse whenever the second condition changes,
 
 ![Dropdown_Collapsed](./public/screenshots/Development_Collapsed.jpg)
+
 ![Dropdown_Open](./public/screenshots/Development_Ilvl_Expanded.jpg)
 
 Re shuffle of component layout for responsive design across mobile and desktop
 
 ![Complete_Mobile](./public/screenshots/Development_Complete_Mobile.jpg)
+
 ![Dropdown_Desktop](./public/screenshots/Development_Complete_Desktop.jpg)
